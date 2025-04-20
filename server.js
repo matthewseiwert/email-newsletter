@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 app.post('/submit', async (req, res) => {
-    const { email } = req.body.email;
+    const email = req.body.email;
     const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
     const DATACENTER = process.env.MAILCHIMP_DC;
     const API_KEY = process.env.MAILCHIMP_API_KEY;
@@ -21,8 +21,8 @@ app.post('/submit', async (req, res) => {
         const response = await axios.post(
             url,
             {
-                email_address:email,
-                status:'subscribed'
+                email_address: email,
+                status: 'subscribed'
             },
             {
                 headers: {
@@ -33,9 +33,9 @@ app.post('/submit', async (req, res) => {
         );
 
         res.status(200).send('Successfully added to Mailchimp!');
-    } catch {
+    } catch (error) {
         console.error('Error adding to Mailchimp:', error);
-        res.status(500).send('Faild to add to Mailchimp');
+        res.status(500).send('Failed to add to Mailchimp');
     }
 });
 
