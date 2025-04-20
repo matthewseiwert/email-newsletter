@@ -9,17 +9,17 @@ const port = process.env.PORT || 3000;
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
-const MAILCHIMP_API_URL= `https://us22.api.mailchimp.com/3.0/lists/${AUDIENCE_ID}/members`;
-const API_KEY = process.env.MAILCHIMP_API_KEY;
-
 
 app.post('/submit', async (req, res) => {
     const { email } = req.body.email;
+    const AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID;
+    const DATACENTER = process.env.MAILCHIMP_DC;
+    const API_KEY = process.env.MAILCHIMP_API_KEY;
+    const url= `https://${DATACENTER}.api.mailchimp.com/3.0/lists/${AUDIENCE_ID}/members`;
     
     try {
         const response = await axios.post(
-            MAILCHIMP_API_URL,
+            url,
             {
                 email_address:email,
                 status:'subscribed'
